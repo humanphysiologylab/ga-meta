@@ -1,0 +1,7 @@
+numpy
+pandas
+scikit-learn
+numba
+mpi4py
+tqdm
+gitpython

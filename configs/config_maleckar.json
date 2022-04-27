@@ -1,0 +1,72 @@
+{
+    "seed": 42,
+
+    "n_organisms": 64,
+    "n_elites": 4,
+    "n_generations": 5,
+
+    "output_folder_name": "/home/mpi_scripts/results",
+
+    "gamma": 0.0015,
+    "loss": "RMSE",
+    "columns_control": ["V"],
+    "columns_model": ["V"],
+
+    "filename_so": "/home/models_ctypes/src/model_ctypes/_maleckar/maleckar.so",
+    "filename_legend_states": "/home/models_ctypes/src/model_ctypes/_maleckar/legend_states.csv",
+    "filename_legend_constants": "/home/models_ctypes/src/model_ctypes/_maleckar/legend_constants.csv",
+
+    "t_run": 3,
+    "t_sampling": 0.001,
+    "tol": 1e-4,
+    "stim_period_legend_name": "stim_period",
+
+    "experimental_conditions": {
+        "common": {
+            "params": {
+
+                "Na_b": 140,
+                "Ca_b": 2.0,
+                "K_b": 4,
+
+                "P_Na": {
+                    "bounds": [0.5, 2],
+                    "is_multiplier": true
+                },
+                "g_K1": {
+                    "bounds": [0.5, 2],
+                    "is_multiplier": true
+                }
+            }
+        },
+
+        "1000": {
+            "params": {
+                "stim_period": 1.0,
+                "Na_i": {
+                    "bounds": [5, 15]
+                },
+                "K_i": {
+                    "bounds": [100, 160]
+                }
+            },
+            "filename_phenotype": "/home/models_ctypes/data/maleckar/fluo/phenotypes/phenotype_1000.csv",
+            "filename_state": "/home/models_ctypes/data/maleckar/fluo/states/state_1000.csv"
+        },
+
+        "500": {
+            "params": {
+                "stim_period": 0.5,
+                "Na_i": {
+                    "bounds": [5, 15]
+                },
+                "K_i": {
+                    "bounds": [100, 160]
+                }
+            },
+            "filename_phenotype": "/home/models_ctypes/data/maleckar/fluo/phenotypes/phenotype_500.csv",
+            "filename_state": "/home/models_ctypes/data/maleckar/fluo/states/state_500.csv"
+        }
+
+    }
+}
