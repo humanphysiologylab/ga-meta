@@ -5,6 +5,12 @@
 
 ## Download source
 
+Во-первых, надо склонировать текущий репозиторий и зайти в него.
+```shell
+git clone git@github.com:humanphysiologylab/ga-meta.git
+cd ga-meta
+```
+
 Скачиваем репозитории с кодом. Я специально не делаю `git clone`. Нужный тэг -- `demo-maleckar`.
 
 ```shell
