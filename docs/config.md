@@ -1,25 +1,25 @@
-# Config. Как сконфигурировать задачу.
+# Config. How to set up a problem.
 
-Вот пример [конфига](../configs/config_maleckar.json).
+[Example](../configs/config_maleckar.json) of the config.
 
-Это должен быть валидный [json](https://www.json.org/json-en.html). Полезная штука --
-можно ставить `#`-комментарии.
+It should be a valid [json](https://www.json.org/json-en.html).
+Although, I made possible comment lines using `#`.
 
-*(Вообще надо было бы сделать [yaml], но когда код писался, про yaml я не знал)*
-
-## Глобальные параметры
-(*кто-то может быть необязательным, это надо в коде искать*)
+## Global parameters
+(*some of them are unnecessary, check the code if needed*)
 ```json
 "seed": 42
 ```
-Инициализация генератора рандома. Работает только при одинаковом числе процессоров. Это потому что генетические операции распределены: каждый процессор делает себе мутантов сам.
+Initialization of the random number generator.
+Works repeatable **only** if the number of processes is the same.
+This is due to distributed genetic operations.
 
 ```json
 "n_organisms": 64
 "n_elites": 4
 "n_generations": 5
 ```
-Число организмов нельзя делать менее 4. Если организмы не делятся на процессоры, то первые будут увеличены. 
+Number of organisms (`n_organisms`) must be > 4. If `n_organisms` is less than number of processes than the former will be properly increased.
 
 ```json
 "filename_so": "/home/models_ctypes/src/model_ctypes/_maleckar/maleckar.so"
@@ -27,9 +27,9 @@
 "filename_legend_constants": "/home/models_ctypes/src/model_ctypes/_maleckar/legend_constants.csv"
 ```
 
-Файл `so` -- скомпилированная "библиотека", которая считает модель. `legend` -- файлы , в которых устанавливаются начальные условия и, самое главное, названия параметров.
-Примеры: [`legend_states.csv`](https://github.com/humanphysiologylab/models_ctypes/blob/demo-maleckar/src/model_ctypes/_maleckar/legend_states.csv), [`legend_constants.csv`](https://github.com/humanphysiologylab/models_ctypes/blob/demo-maleckar/src/model_ctypes/_maleckar/legend_constants.csv).
-Необходимые столбцы [`name`, `value`], остальное неважно.
+`so`-file is compiled library for the model running. `legend`-files define initial conditions and names of the genes.
+Examples: [`legend_states.csv`](https://github.com/humanphysiologylab/models_ctypes/blob/demo-maleckar/src/model_ctypes/_maleckar/legend_states.csv), [`legend_constants.csv`](https://github.com/humanphysiologylab/models_ctypes/blob/demo-maleckar/src/model_ctypes/_maleckar/legend_constants.csv).
+Columns [`name`, `value`] are obligatory.
 
 ```json
 "t_run": 3
@@ -37,15 +37,18 @@
 "tol": 1e-4
 "stim_period_legend_name": "stim_period"
 ```
-Это полностью зависит от того, как исполнена модель. Для Малекар, на которой я показываю работу кода, эти параметры значат следующее.
 
-`t_run` -- сколько **секунд** минимум считать модель на каждом периоде. Если нужно конкретное число ударов (хотя, это даёт менее стационарное решение), можно  вместо `t_run` использовать `n_beats: 9`, например.
+This part completely depends on the model. For the Maleckar model (used in demo) these parameters are:
 
-`t_sampling` -- шаг для вывода решения.
+`t_run` -- minimal number of **seconds** to run the model on every pacing period.
+It's possible to use `n_beats` insted, if fixed number of beats is needed.
+However, the second option provied less stationary solution.
 
-`tol` -- параметр солвера LSODA.
+`t_sampling` -- sampling period in the output.
 
-`stim_period_legend_name` -- как называется период симуляции в `legend`-файле. Для Малекар это `"stim_period"`.
+`tol` -- parameter for the LSODA solver.
+
+`stim_period_legend_name` -- name of the variable that means the pacing period used in the `legend`-file. For the Maleckar model, it is `"stim_period"`.
 
 ```json
 "loss": "RMSE"
@@ -53,13 +56,16 @@
 "columns_model": ["V"]
 ```
 
-Про то, какие вообще бывают лоссы, как их прописывать смотреть в разделе [Loss](./loss.md). `columns_*` определяют колонки из датафреймов, которые использутся для подсчета. Для потенциала и кальциевых переходов они могут выглядеть так:
+About losses, please refer to the section "[Loss. How to define loss function](./loss.md)."
+`columns_*` define columns in the solution dataframe.
+These columns are used to calculate loss function. 
+Example for the transmembrane potential and Ca-transients:
 ```json
-"loss": "какой-то лосс"
+"loss": "your preferable loss"
 "columns_control": ["V", "CaT"]
 "columns_model": ["V", "fluo"]
 ```
-То есть называния колонок могут и не совпадать.
+In this example, names in `columns_control` and `columns_model` are not equal pairwise (`CaT` and `fluo`). It's okay and depends on the input files.
 
 ```json
 "gamma": 0.0015
@@ -67,17 +73,17 @@
 "mutation_rate": 1.0
 "selection_force": 2
 ```
-Гиперпараметры геналгоритмов.
-На самом деле, все эти параметры необязательные.
-Если их не указать, они проставятся по-дефолту ([см. тут](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/io_utils.py#L120)). Критичный параметр `gamma`, единица для него это слишком много.
+Hyperparams of the genetic algorithms.
+In fact, all these are unnecessary.
+There are default values for them ([here](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/io_utils.py#L120)). The most crutial parameter is `gamma`.
+Default `gamma = 1` is too much. I recommend `0.15` or so.
 
 ---
 
-В целом всё с верхне-уровневыми параметрами, хотя бывают (и можно делать сколько угодно) ещё. Например, есть вот [ручка для L2-регуляризации](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/loss_utils.py#L178).
+You can implement any other global parameters you need.
+Example: [L2-regularization](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/loss_utils.py#L178).
 
 ## Experimental conditions
-
-Сюда попадает информация о том, какие параметры на каких периодах менять, в каких границах, на каких бейзлайнах считать ошибку и т.п.
 
 ```json
 "common": {
@@ -99,11 +105,15 @@
 }
 ```
 
-Это параметры, которые шэрятся (надо было бы `shared` назвать, а не `common`) между всеми периодами стимуляции.
+Shared parameters among all experimental conditions.
 
-Правило простое, если параметр задаётся `"Na_b": 140`, то это константа, которую надо зафиксировать. Если `"P_Na": {"bounds": [0.5, 2], ...}`, то это "ген", который надо подбирать.
+Rules are simple:
 
-Ген в общем случае задаётся так:
+`"Na_b": 140` means that the gene with a name `Na_b` is the constant (`140`).
+
+`"P_Na": {"bounds": [0.5, 2], ...}` means that the gene with a name `P_Na` is mutable.
+
+In general, mutable genes are defined as follows:
 ```json
 "Name": {
     "bounds": [lower, upper],
@@ -111,9 +121,10 @@
     "gamma_multiplier": 0.5
 }
 ```
-`bounds` -- всё понятно. Это единственный обязательный параметр.
-`is_multiplier` -- нужно ли мутировать в log-шкале.
-`gamma_multiplier` -- этой штукой можно увеличить или уменьшить интенсивность мутации. Работает вместе с `gamma`, которая задаётся на верхнем уровне.
+
+`bounds` -- obvious purpose. This is the only obligatory parameter.
+`is_multiplier` -- turns on log-scale if set to `true`.
+`gamma_multiplier` -- mutation amplitude, works along with the global aforementioned `gamma`.
 
 ```json
 "500": {
@@ -130,16 +141,16 @@
     "filename_state": "/home/models_ctypes/data/maleckar/fluo/states/state_500.csv"
 }
 ```
-Так определяется, каким образом обрабатывается конкретный период (или что угодно в этом роде).
+This is definition of some esperimental condition (pacing period, drug administration, etc.)
 
-`"500"` -- это просто название этого `experimental condition`. Может быть чем угодно, например: `"PCL = 500ms"`, `"Second trace"`, `"Pinacidil 5uM"`.
+`"500"` -- just a name of this `experimental condition`. Must be a string (not an int, `500` is invalid). Can be: `"PCL = 500ms"`, `"Second trace"`, `"Pinacidil 5uM"`.
 
-`params` -- ровно то же самое, как и для `common` выше.
+`params` -- same as `common`.
 
-`filename_phenotype` -- бейзлайн, на котором нужно вычислять loss.
+`filename_phenotype` -- baseline to use in the calculation of the loss function.
 
-`filename_state` -- начальное условие для **первого поколения** организмов.
+`filename_state` -- intitial state for the **first generation** of the organisms.
 
 ---
 
-`experimental conditions` может быть сколько угодно, но не менее одного, не считая `common`.
+Number of the `experimental conditions` (apart from the required `common`) must be greater than one.

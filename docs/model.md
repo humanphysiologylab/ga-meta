@@ -1,7 +1,7 @@
-# Model. Как получать решение в python, когда модель есть на C.
+# Model. How to get a solution inside python when a model is implemented in C.
 
-[Класс](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/cardiac_model.py#L23), который отправляет задачу на обсчет и получает решение.
+[Class](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/cardiac_model.py#L23) that runs model and returns a result.
 
-С помощью [`ctypes`](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/cardiac_model.py#L29) делается связка между python и С. Сигнатура функции должна точно совпадать. [Вот](https://github.com/humanphysiologylab/models_ctypes/blob/1003a3f8e24dcdf6ebebf633e523e31c90a02864/src/model_ctypes/_maleckar/run.c#L22), как `run` выглялит в C.
+Python and C are interfaced via [`ctypes`](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/cardiac_model.py#L29). Functions' signatures in Python and C must be the same. [Exmaple](https://github.com/humanphysiologylab/models_ctypes/blob/1003a3f8e24dcdf6ebebf633e523e31c90a02864/src/model_ctypes/_maleckar/run.c#L22) of how `run` is implemented in C.
 
-[Небольшой хелпер](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/cardiac_model.py#L7), который позволяет передвать `null` вместо массивов.
+[Little helper](https://github.com/humanphysiologylab/mpi_scripts/blob/a1fdb8ace7af8d759c026393ab00b67ca20a97c3/mpi_scripts/voigt/cardiac_model.py#L7) makes possible to use `null`-s instead of the arraysвместо массивов.
