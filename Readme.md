@@ -49,7 +49,7 @@ All next commands must be run inside the container via terminal.
 The Maleckar AP model was taken from the CellML ([link](https://models.physiomeproject.org/exposure/bbd802c6a6d6e69b746244f83b4fb89b/maleckar_greenstein_trayanova_giles_2009.cellml/view)). We use LSODA solver to run the model.
 
 ```shell
-cd /home/models_ctypes/src/models_ctypes/_maleckar
+cd /home/models_ctypes/src/model_ctypes/_maleckar
 make clean && make
 ```
 
