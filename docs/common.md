@@ -1,19 +1,15 @@
-# Common. Что вообще происходит.
+# Common. What's going on.
 
-Происходит всё то, что описано в статье PLoS.
-Есть несколько технических отличий.
+Please refer to [our original PLoS article](https://doi.org/10.1371/journal.pone.0231695). I implemented a few alterations.
 
-## Генетические операции распредедены
-Раньше один мастер-процесс делал генетические операции, а потом всё считал.
-Теперь мастер практически отсутствует (он только пишет в stdout, сколько эпох прошло).
-Каждый процесс занят и обсчетом своего батча организмов и обновлением этого батча.
-Процесс генерирует мутантов только для себя и столько, сколько ему нужно (конечно, имея всю популяцию под рукой).
+## Genetical operations are distributed
+Originally, there was a master process that performed all genetic operations.
+In the current version, there is no such master process.
+Every process uses the whole population to create mutant organisms required only for this process.
+This results in greater computational performance.
 
-Распределение генопераций позволяет сбаллансировать нагрузку между процессами.
-Так можно делать тысячи организмов и не ждать мастера.
+## Multiplicative scale for genes
+Some genes may vary from ⅒ to 10 (e.g. conductivity of some ion channel). In the current version, one may use a log scale for the genetic operations on such genes.
 
-## Геноперации в log-шкале
-log-шкала нужна для множителей, например, для какой-нибудь проводимости, которая может меняться от ⅒ до 10.
-
-## Другая селекция
-Другая это [классический tournament](https://en.wikipedia.org/wiki/Tournament_selection).
+## Tournament selection
+[Link](https://en.wikipedia.org/wiki/Tournament_selection).
