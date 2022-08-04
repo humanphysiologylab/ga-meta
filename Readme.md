@@ -4,6 +4,12 @@ More detailed documentation is [here](./docs/index.md).
 
 ## Download source
 
+First of all.
+```shell
+git clone git@github.com:humanphysiologylab/ga-meta.git
+cd ga-meta
+```
+
 I intentionally do not use `git clone`, we need `demo-maleckar` tag.
 
 ```shell
