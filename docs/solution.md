@@ -13,7 +13,7 @@ GA operates with organisms that **must be inherited** from the [`Solution`](http
 
 `Solution` must implement `update()` and `is_valid()` methods. They are not implemented by default.
 
-[`update()`](https://github.com/humanphysiologylab/pypoptim/blob/ca3f4340af19a569153b49b9b03e96ea7ab87f40/pypoptim/algorythm/solution.py#L95) returns `y` given `x`. Initially, `y` stores `None` that meands that the solution is "created" yet we have not measured its loss. [This](https://github.com/humanphysiologylab/pypoptim/blob/ca3f4340af19a569153b49b9b03e96ea7ab87f40/pypoptim/algorythm/solution.py#L99) code checks if the solutions is updated.
+[`update()`](https://github.com/humanphysiologylab/pypoptim/blob/ca3f4340af19a569153b49b9b03e96ea7ab87f40/pypoptim/algorythm/solution.py#L95) returns `y` given `x`. Initially, `y` stores `None` that means that the solution is "created" yet we have not measured its loss. [This](https://github.com/humanphysiologylab/pypoptim/blob/ca3f4340af19a569153b49b9b03e96ea7ab87f40/pypoptim/algorythm/solution.py#L99) code checks if the solutions is updated.
 
 [`is_valid()`](https://github.com/humanphysiologylab/pypoptim/blob/ca3f4340af19a569153b49b9b03e96ea7ab87f40/pypoptim/algorythm/solution.py#L102) checks if the solution is ready for the genetic operations. It's important in some edge cases. For example, if some columns of the `state` have `NaN` values after `update()`.
 
