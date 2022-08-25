@@ -122,7 +122,7 @@ In general, mutable genes are defined as follows:
 }
 ```
 
-`bounds` -- are multipliers that are multiplied by the reference value(refval) of the parameter in legend_constants. Then real bounds of parameter "Name" are  [refval*lower, refval*upper]. This is the only obligatory parameter.
+`bounds` -- are multipliers that are multiplied by the reference value(refval) of the parameter in legend_constants. Example: real bounds of parameter "Name" are  [refval * lower, refval*upper]. This is the only obligatory parameter.
 `is_multiplier` -- turns on log-scale if set to `true`.
 `gamma_multiplier` -- mutation amplitude, works along with the global aforementioned `gamma`.
 
