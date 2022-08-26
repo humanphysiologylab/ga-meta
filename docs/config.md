@@ -122,9 +122,24 @@ In general, mutable genes are defined as follows:
 }
 ```
 
-`bounds` -- are multipliers that are multiplied by the reference value( $refval$ ) of the parameter in `legend_constants.csv`. Example: real bounds of parameter "Name" are  [ $refval * lower$ , $refval * upper$ ]. This is the only obligatory parameter.
+`bounds` -- lower and upper bound for the gene used in genetical operations. This is the only obligatory parameter.
 
-`is_multiplier` -- turns on log-scale if set to `true`. Parameters will be searched in log scale. Bounds should be done in log scale too. Example: if log scale turn on, then  real bounds of parameter "Name" are  [ $refval * 10^{lower}$ , $refval * 10^{upper}$ ]
+`is_multiplier` -- turns on log-scale (`false` by default). If `is_multiplier` is set to `true`, bounds must be given in the multiplier form.
+
+Few examples:
+```json
+"x": {
+    "bounds": [-1, 2]
+}
+```
+In this case, gene `x` will be modified in linear scale in range from -1 to 2.
+
+```json
+"y": {
+    "bounds": [0.1, 10]
+}
+```
+Gene `y` will be modified in logarithmic scale from ⅒·y₀ to 10·y₀, where y₀ is given in `legend`-file.
 
 `gamma_multiplier` -- mutation amplitude, works along with the global aforementioned `gamma`.
 
