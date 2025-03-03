@@ -1,17 +1,16 @@
-# How to
+This document will help you to run Genetic Algorithms (GA) with the Maleckar model.
 
-Этот документ о том, как запустить генетические алгоритмы на модели Малекар.
-Подробности, как работает сам код, можно прочитать [здесь](./docs/index.md).
+More detailed documentation is [here](./docs/index.md).
 
 ## Download source
 
-Во-первых, надо склонировать текущий репозиторий и зайти в него.
+First of all.
 ```shell
 git clone git@github.com:humanphysiologylab/ga-meta.git
 cd ga-meta
 ```
 
-Скачиваем репозитории с кодом. Я специально не делаю `git clone`. Нужный тэг -- `demo-maleckar`.
+I intentionally do not use `git clone`, we need `demo-maleckar` tag.
 
 ```shell
 # mpi_scripts
@@ -28,18 +27,17 @@ mv models_ctypes-demo-maleckar models_ctypes
 
 ```
 
-Репозиторий самих ГА (`pypoptim`) не качаем, это будет дальше.
 
-Ещё нам нужен конфиг.
+Moreover, we need to copy the configuration file.
 ```shell
 cp configs/config_maleckar.json mpi_scripts/mpi_scripts/voigt/configs    
 ```
 
 ## Docker
 
-Я купил мак на M1, а с ним есть проблемы с библиотеками. Поэтому я сделал Docker контейнер, в котором запускается расчет. Так или иначе, Docker классная штука, советую. Как установить докер, читать [тут](https://docs.docker.com/get-docker/).
+I recommend running everything inside the Docker container. You may read [here](https://docs.docker.com/get-docker/) about how to install Docker.
 
-Можно и без Docker, тогда просто нужно выполнить все команды из [Dockerfile](./Dockerfile).
+Anyway, you may not use Docker. Then just run commands from the [Dockerfile](./Dockerfile).
 
 ```shell
 docker build -t ga .
@@ -50,19 +48,19 @@ docker run \
     -it ga
 ```
 
-Далее всё делается в самом контейнере (последней командой должен был открыться терминал). И `pypoptim` был установлен прямо в контейнер.
+All next commands must be run inside the container via terminal.
 
 ## Build model
-Модель Maleckar была взята с CellML в C-варианте. Солвер для неё -- LSODA.
+The Maleckar AP model was taken from the CellML ([link](https://models.physiomeproject.org/exposure/bbd802c6a6d6e69b746244f83b4fb89b/maleckar_greenstein_trayanova_giles_2009.cellml/view)). We use LSODA solver to run the model.
 
 ```shell
-cd /home/models_ctypes/src/models_ctypes/_maleckar
+cd /home/models_ctypes/src/model_ctypes/_maleckar
 make clean && make
 ```
 
 ## Run
 
-Теперь всё готово для запуска.
+Everything is ready now.
 
 ```shell
 cd /home/mpi_scripts/mpi_scripts/voigt
@@ -70,14 +68,16 @@ cd /home/mpi_scripts/mpi_scripts/voigt
 # single worker
 python3 mpi_script.py configs/config_maleckar.json
 
-# four workers
+# ... or four workers
 mpirun -n 4 python3 mpi_script.py configs/config_maleckar.json
 ```
 
 ## Results
 
-Результаты расчета будут лежать в `mpi_scripts/results`. Если вы ещё в контейнере, то к ним можно прийти так: 
+Results will be stored in `mpi_scripts/results`. If you use the docker, you may find them in:
+
 ```shell
 cd  /home/mpi_scripts/results
 ```
-Посмотреть на цифры можно, например, [в этом ноутбуке](./notebooks/001-Results.ipynb).
+
+[Notebook](./notebooks/001-Results.ipynb) to load the results.
